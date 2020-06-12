@@ -4,7 +4,7 @@ import { EventList } from "../features/events/components/EventList";
 import { CircularProgress } from "@material-ui/core";
 
 export const EventsPage: React.FC = () => {
-    const { loading, error, data } = useEventsListQuery();
+    const { loading, data } = useEventsListQuery();
     if (loading) {
         return <CircularProgress color="primary" size={40} />;
     }

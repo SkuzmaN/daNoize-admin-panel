@@ -3,5 +3,12 @@
         "menu": {
             "events": "Wydarzenia"
         }
+    },
+    "eventDetails": {
+        "attenderList": {
+            "score": "Wynik: {{score}}",
+            "availableReactions": "Dostępne reakcje"
+        }
+        
     }
 }

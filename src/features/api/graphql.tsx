@@ -294,13 +294,24 @@ export type EventDetailsQuery = (
   { __typename?: 'Query' }
   & { event: (
     { __typename?: 'Event' }
-    & { attenders: Array<(
+    & Pick<Event, 'uuid' | 'title'>
+    & { incidents: Array<(
+      { __typename?: 'Incident' }
+      & Pick<Incident, 'uuid' | 'type' | 'variables'>
+    )>, attenders: Array<(
       { __typename?: 'Attender' }
-      & Pick<Attender, 'score'>
+      & Pick<Attender, 'uuid' | 'score'>
       & { team: (
         { __typename?: 'Team' }
-        & Pick<Team, 'name'>
-      ) }
+        & Pick<Team, 'name' | 'logo'>
+      ), availableReactions: Array<(
+        { __typename?: 'AttenderAvailableReaction' }
+        & Pick<AttenderAvailableReaction, 'uuid'>
+        & { reaction: (
+          { __typename?: 'Reaction' }
+          & Pick<Reaction, 'type'>
+        ) }
+      )> }
     )> }
   ) }
 );
@@ -341,11 +352,26 @@ export type AttenderModifiedSubscription = (
 export const EventDetailsDocument = gql`
     query EventDetails($uuid: String!) {
   event(uuid: $uuid) {
+    uuid
+    title
+    incidents {
+      uuid
+      type
+      variables
+    }
     attenders {
+      uuid
       team {
         name
+        logo
       }
       score
+      availableReactions {
+        uuid
+        reaction {
+          type
+        }
+      }
     }
   }
 }
