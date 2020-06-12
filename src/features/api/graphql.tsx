@@ -344,7 +344,18 @@ export type AttenderModifiedSubscription = (
   { __typename?: 'Subscription' }
   & { attenderModified: (
     { __typename?: 'Attender' }
-    & Pick<Attender, 'supportersNum'>
+    & Pick<Attender, 'uuid' | 'score'>
+    & { team: (
+      { __typename?: 'Team' }
+      & Pick<Team, 'name' | 'logo'>
+    ), availableReactions: Array<(
+      { __typename?: 'AttenderAvailableReaction' }
+      & Pick<AttenderAvailableReaction, 'uuid'>
+      & { reaction: (
+        { __typename?: 'Reaction' }
+        & Pick<Reaction, 'type'>
+      ) }
+    )> }
   ) }
 );
 
@@ -448,7 +459,18 @@ export type EventsListQueryResult = ApolloReactCommon.QueryResult<EventsListQuer
 export const AttenderModifiedDocument = gql`
     subscription attenderModified($event: String!) {
   attenderModified(event: $event) {
-    supportersNum
+    uuid
+    team {
+      name
+      logo
+    }
+    score
+    availableReactions {
+      uuid
+      reaction {
+        type
+      }
+    }
   }
 }
     `;

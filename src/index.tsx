@@ -3,14 +3,9 @@ import ReactDOM from "react-dom";
 import App from "./App";
 import * as serviceWorker from "./serviceWorker";
 import { initTranslation } from "./translations/i18n";
-import ApolloClient from "apollo-boost";
 import { ApolloProvider } from "@apollo/react-hooks";
 import { ThemeProvider, CssBaseline, createMuiTheme } from "@material-ui/core";
-
-const client = new ApolloClient({
-    uri: process.env.REACT_APP_API_URI,
-    
-});
+import { client } from "./features/api";
 
 initTranslation();
 
