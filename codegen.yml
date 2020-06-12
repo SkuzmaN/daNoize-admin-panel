@@ -1,0 +1,14 @@
+overwrite: true
+schema: ${REACT_APP_API_URI}
+documents: "src/**/*.{tsx,ts}"
+generates:
+  src/features/api/graphql.tsx:
+    plugins:
+      - "typescript"
+      - "typescript-operations"
+      - "typescript-react-apollo"
+    config:
+      withHOC: false
+      withHooks: true
+      withComponent: false
+      withResultType: true

@@ -3,6 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "@apollo/react-hooks": "^3.1.5",
     "@material-ui/core": "^4.10.1",
     "@testing-library/jest-dom": "^4.2.4",
     "@testing-library/react": "^9.3.2",
@@ -11,6 +12,9 @@
     "@types/node": "^12.0.0",
     "@types/react": "^16.9.0",
     "@types/react-dom": "^16.9.0",
+    "apollo-boost": "^0.4.9",
+    "dayjs": "^1.8.28",
+    "graphql": "^15.1.0",
     "i18next": "^19.4.5",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
@@ -23,7 +27,8 @@
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "codegen": "graphql-codegen --config codegen.yml dotenv_config_path=./.env.local -r dotenv/config"
   },
   "eslintConfig": {
     "extends": "react-app"
@@ -41,7 +46,13 @@
     ]
   },
   "devDependencies": {
+    "@graphql-codegen/cli": "1.15.1",
+    "@graphql-codegen/introspection": "1.15.1",
+    "@graphql-codegen/typescript": "1.15.1",
+    "@graphql-codegen/typescript-operations": "1.15.1",
+    "@graphql-codegen/typescript-react-apollo": "1.15.1",
     "@types/react-router-dom": "^5.1.5",
+    "dotenv": "^8.2.0",
     "eslint": "6.8.0",
     "eslint-config-airbnb": "18.1.0",
     "eslint-config-prettier": "^6.11.0",
