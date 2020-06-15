@@ -8,10 +8,10 @@ interface AttendersListProps {
 
 export const AttendersList: React.FC<AttendersListProps> = ({ items }) => {
     return (
-        <div>
+        <>
             {items.map((attender) => (
                 <AttenderListItem key={attender.uuid} item={attender} />
             ))}
-        </div>
+        </>
     );
 };

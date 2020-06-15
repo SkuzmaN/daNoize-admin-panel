@@ -16,6 +16,9 @@ import { ChangeScore } from "../ChangeScore";
 const useStyles = makeStyles((theme) => ({
     root: {
         margin: theme.spacing(2, 0),
+        "&:first-child": {
+            marginTop: 0,
+        },
     },
     reactionsWrapper: {
         display: "flex",

@@ -74,6 +74,7 @@ export type Event = {
 
 
 export type EventIncidentsArgs = {
+  orderBy?: Maybe<EventIncidentsOrderByInput>;
   skip?: Maybe<Scalars['Int']>;
   after?: Maybe<IncidentWhereUniqueInput>;
   before?: Maybe<IncidentWhereUniqueInput>;
@@ -154,6 +155,10 @@ export type Country = {
   __typename?: 'Country';
   uuid: Scalars['String'];
   name: Scalars['String'];
+};
+
+export type EventIncidentsOrderByInput = {
+  createdAt?: Maybe<OrderByArg>;
 };
 
 export type IncidentWhereUniqueInput = {
@@ -322,7 +327,7 @@ export type EventDetailsQuery = (
     & Pick<Event, 'uuid' | 'title'>
     & { incidents: Array<(
       { __typename?: 'Incident' }
-      & Pick<Incident, 'uuid' | 'type' | 'variables'>
+      & Pick<Incident, 'uuid' | 'type' | 'variables' | 'createdAt'>
     )>, attenders: Array<(
       { __typename?: 'Attender' }
       & Pick<Attender, 'uuid' | 'score'>
@@ -384,6 +389,33 @@ export type AttenderModifiedSubscription = (
   ) }
 );
 
+export type AddIncidentMutationVariables = {
+  event: Scalars['String'];
+  variables: Scalars['String'];
+};
+
+
+export type AddIncidentMutation = (
+  { __typename?: 'Mutation' }
+  & { addIncident: (
+    { __typename?: 'Incident' }
+    & Pick<Incident, 'uuid' | 'type' | 'variables' | 'createdAt'>
+  ) }
+);
+
+export type IncidentAppearedSubscriptionVariables = {
+  event: Scalars['String'];
+};
+
+
+export type IncidentAppearedSubscription = (
+  { __typename?: 'Subscription' }
+  & { incidentAppeared: (
+    { __typename?: 'Incident' }
+    & Pick<Incident, 'uuid' | 'type' | 'variables' | 'createdAt'>
+  ) }
+);
+
 
 export const ChangeScoreDocument = gql`
     mutation ChangeScore($attender: String!, $score: Int!) {
@@ -434,10 +466,11 @@ export const EventDetailsDocument = gql`
   event(uuid: $uuid) {
     uuid
     title
-    incidents {
+    incidents(orderBy: {createdAt: desc}) {
       uuid
       type
       variables
+      createdAt
     }
     attenders {
       uuid
@@ -565,3 +598,71 @@ export function useAttenderModifiedSubscription(baseOptions?: ApolloReactHooks.S
       }
 export type AttenderModifiedSubscriptionHookResult = ReturnType<typeof useAttenderModifiedSubscription>;
 export type AttenderModifiedSubscriptionResult = ApolloReactCommon.SubscriptionResult<AttenderModifiedSubscription>;
+export const AddIncidentDocument = gql`
+    mutation AddIncident($event: String!, $variables: String!) {
+  addIncident(event: $event, type: "message", variables: $variables) {
+    uuid
+    type
+    variables
+    createdAt
+  }
+}
+    `;
+export type AddIncidentMutationFn = ApolloReactCommon.MutationFunction<AddIncidentMutation, AddIncidentMutationVariables>;
+
+/**
+ * __useAddIncidentMutation__
+ *
+ * To run a mutation, you first call `useAddIncidentMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useAddIncidentMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [addIncidentMutation, { data, loading, error }] = useAddIncidentMutation({
+ *   variables: {
+ *      event: // value for 'event'
+ *      variables: // value for 'variables'
+ *   },
+ * });
+ */
+export function useAddIncidentMutation(baseOptions?: ApolloReactHooks.MutationHookOptions<AddIncidentMutation, AddIncidentMutationVariables>) {
+        return ApolloReactHooks.useMutation<AddIncidentMutation, AddIncidentMutationVariables>(AddIncidentDocument, baseOptions);
+      }
+export type AddIncidentMutationHookResult = ReturnType<typeof useAddIncidentMutation>;
+export type AddIncidentMutationResult = ApolloReactCommon.MutationResult<AddIncidentMutation>;
+export type AddIncidentMutationOptions = ApolloReactCommon.BaseMutationOptions<AddIncidentMutation, AddIncidentMutationVariables>;
+export const IncidentAppearedDocument = gql`
+    subscription IncidentAppeared($event: String!) {
+  incidentAppeared(event: $event) {
+    uuid
+    type
+    variables
+    createdAt
+  }
+}
+    `;
+
+/**
+ * __useIncidentAppearedSubscription__
+ *
+ * To run a query within a React component, call `useIncidentAppearedSubscription` and pass it any options that fit your needs.
+ * When your component renders, `useIncidentAppearedSubscription` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the subscription, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useIncidentAppearedSubscription({
+ *   variables: {
+ *      event: // value for 'event'
+ *   },
+ * });
+ */
+export function useIncidentAppearedSubscription(baseOptions?: ApolloReactHooks.SubscriptionHookOptions<IncidentAppearedSubscription, IncidentAppearedSubscriptionVariables>) {
+        return ApolloReactHooks.useSubscription<IncidentAppearedSubscription, IncidentAppearedSubscriptionVariables>(IncidentAppearedDocument, baseOptions);
+      }
+export type IncidentAppearedSubscriptionHookResult = ReturnType<typeof useIncidentAppearedSubscription>;
+export type IncidentAppearedSubscriptionResult = ApolloReactCommon.SubscriptionResult<IncidentAppearedSubscription>;

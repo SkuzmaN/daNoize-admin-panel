@@ -15,5 +15,13 @@
             "submit": "Zaktualizuj",
             "cancel": "Anuluj"
         }
+    },
+    "incidentsList": {
+        "title": "Historia wiadomości tekstowych"
+    },
+    "addIncident": {
+        "title": "Dodaj nową wiadomość",
+        "message": "Wiadomość",
+        "submit": "Wyślij"
     }
 }

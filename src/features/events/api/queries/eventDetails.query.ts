@@ -1,29 +1,31 @@
 import gql from 'graphql-tag';
 
 export default gql`
-query EventDetails($uuid:String!){
-  event(uuid:$uuid){
+query EventDetails($uuid: String!) {
+  event(uuid: $uuid) {
     uuid
     title
-    incidents{
+    incidents(orderBy: { createdAt: desc }) {
       uuid
       type
       variables
+      createdAt
     }
-    attenders{
+    attenders {
       uuid
-      team{
+      team {
         name
         logo
       }
       score
-      availableReactions{
+      availableReactions {
         uuid
-        reaction{
+        reaction {
           type
         }
       }
     }
   }
 }
+
 `
