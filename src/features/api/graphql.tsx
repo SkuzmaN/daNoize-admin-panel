@@ -285,6 +285,31 @@ export type AttenderReaction = {
   attenderAvailableReaction: AttenderAvailableReaction;
 };
 
+export type ChangeScoreMutationVariables = {
+  attender: Scalars['String'];
+  score: Scalars['Int'];
+};
+
+
+export type ChangeScoreMutation = (
+  { __typename?: 'Mutation' }
+  & { changeScore: (
+    { __typename?: 'Attender' }
+    & Pick<Attender, 'uuid' | 'score'>
+    & { team: (
+      { __typename?: 'Team' }
+      & Pick<Team, 'name' | 'logo'>
+    ), availableReactions: Array<(
+      { __typename?: 'AttenderAvailableReaction' }
+      & Pick<AttenderAvailableReaction, 'uuid'>
+      & { reaction: (
+        { __typename?: 'Reaction' }
+        & Pick<Reaction, 'type'>
+      ) }
+    )> }
+  ) }
+);
+
 export type EventDetailsQueryVariables = {
   uuid: Scalars['String'];
 };
@@ -360,6 +385,50 @@ export type AttenderModifiedSubscription = (
 );
 
 
+export const ChangeScoreDocument = gql`
+    mutation ChangeScore($attender: String!, $score: Int!) {
+  changeScore(attender: $attender, score: $score) {
+    uuid
+    team {
+      name
+      logo
+    }
+    score
+    availableReactions {
+      uuid
+      reaction {
+        type
+      }
+    }
+  }
+}
+    `;
+export type ChangeScoreMutationFn = ApolloReactCommon.MutationFunction<ChangeScoreMutation, ChangeScoreMutationVariables>;
+
+/**
+ * __useChangeScoreMutation__
+ *
+ * To run a mutation, you first call `useChangeScoreMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useChangeScoreMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [changeScoreMutation, { data, loading, error }] = useChangeScoreMutation({
+ *   variables: {
+ *      attender: // value for 'attender'
+ *      score: // value for 'score'
+ *   },
+ * });
+ */
+export function useChangeScoreMutation(baseOptions?: ApolloReactHooks.MutationHookOptions<ChangeScoreMutation, ChangeScoreMutationVariables>) {
+        return ApolloReactHooks.useMutation<ChangeScoreMutation, ChangeScoreMutationVariables>(ChangeScoreDocument, baseOptions);
+      }
+export type ChangeScoreMutationHookResult = ReturnType<typeof useChangeScoreMutation>;
+export type ChangeScoreMutationResult = ApolloReactCommon.MutationResult<ChangeScoreMutation>;
+export type ChangeScoreMutationOptions = ApolloReactCommon.BaseMutationOptions<ChangeScoreMutation, ChangeScoreMutationVariables>;
 export const EventDetailsDocument = gql`
     query EventDetails($uuid: String!) {
   event(uuid: $uuid) {

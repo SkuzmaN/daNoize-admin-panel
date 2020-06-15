@@ -8,7 +8,12 @@
         "attenderList": {
             "score": "Wynik: {{score}}",
             "availableReactions": "Dostępne reakcje"
+        },
+        "changeScore": {
+            "title": "Zmień wynik dla drużyny {{team}}",
+            "score": "Wynik",
+            "submit": "Zaktualizuj",
+            "cancel": "Anuluj"
         }
-        
     }
 }
