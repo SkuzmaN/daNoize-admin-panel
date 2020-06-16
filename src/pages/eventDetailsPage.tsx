@@ -17,10 +17,16 @@ import {
     IncidentAppearedSubscription,
     IncidentAppearedSubscriptionVariables,
     IncidentAppearedDocument,
+    EventStatusChangedSubscription,
+    EventStatusChangedSubscriptionVariables,
+    EventStatusChangedDocument
 } from "../features/api/graphql";
 import { AttendersList } from "../features/events/components/AttendersList";
 import { IncidentsList } from "../features/incidents/components/IncidentsList";
 import { AddIncident } from "../features/incidents/components/AddIncident";
+import dayjs from "dayjs";
+import { Trans, useTranslation } from "react-i18next";
+import { ChangeStatus } from "../features/events/components/ChangeStatus";
 
 const useStyles = makeStyles((theme) => ({
     divider: {
@@ -43,6 +49,7 @@ export const EventDetailsPage: React.FC = () => {
         },
     });
     const styles = useStyles();
+    const { t } = useTranslation();
     const incidentsListWrapperRef = useRef<HTMLDivElement | null>(null);
 
     const subscribeToAttenderModified = useCallback(
@@ -108,10 +115,42 @@ export const EventDetailsPage: React.FC = () => {
         [subscribeToMore, uuid]
     );
 
+    const subscribeToStatusChanged = useCallback(
+        () =>
+            subscribeToMore<
+                EventStatusChangedSubscription,
+                EventStatusChangedSubscriptionVariables
+            >({
+                document: EventStatusChangedDocument,
+                variables: {
+                    event: uuid,
+                },
+                updateQuery: (prev, { subscriptionData }) => {
+                    if (!subscriptionData.data) {
+                        return prev;
+                    }
+                    const { status } = subscriptionData.data.eventStatusChanged;
+                    return {
+                        ...prev,
+                        event: {
+                            ...prev.event,
+                            status,
+                        },
+                    };
+                },
+            }),
+        [subscribeToMore, uuid]
+    );
+
     useEffect(() => {
         subscribeToAttenderModified();
         subscribeToIncidentAdded();
-    }, [subscribeToAttenderModified, subscribeToIncidentAdded]);
+        subscribeToStatusChanged();
+    }, [
+        subscribeToAttenderModified,
+        subscribeToIncidentAdded,
+        subscribeToStatusChanged,
+    ]);
 
     useEffect(() => {
         if (incidentsListWrapperRef.current) {
@@ -132,7 +171,35 @@ export const EventDetailsPage: React.FC = () => {
             <Grid container spacing={3}>
                 <Grid item xs={12}>
                     <Paper className={styles.section}>
-                        TODO Status zmień status planowy start
+                        <Typography>
+                            <Trans
+                                i18nKey="eventDetails.plannedStartedDate"
+                                values={{
+                                    date: dayjs(
+                                        data?.event.plannedStartDate
+                                    ).format("DD-MM-YYYY HH:mm:ss"),
+                                }}
+                            >
+                                Planned start date <strong>date</strong>
+                            </Trans>
+                        </Typography>
+                        <Divider className={styles.divider} />
+                        <Trans
+                            i18nKey="eventDetails.actualStatus"
+                            values={{
+                                status: t(
+                                    `eventStatuses.${(
+                                        data?.event.status || ""
+                                    ).toLowerCase()}`
+                                ),
+                            }}
+                        >
+                            Actual state: <strong>state</strong>
+                        </Trans>
+                        <ChangeStatus
+                            event={uuid}
+                            defaultStatus={data?.event.status}
+                        />
                     </Paper>
                 </Grid>
                 <Grid item xs={6}>

@@ -11,6 +11,7 @@ import EditIcon from "@material-ui/icons/Edit";
 import { useTranslation } from "react-i18next";
 import { Formik, Form, Field, FormikHelpers } from "formik";
 import { TextField } from "formik-material-ui";
+import * as Yup from "yup";
 import { useChangeScoreMutation } from "../../../api";
 
 type ChangeScoreFormData = {
@@ -22,6 +23,10 @@ interface ChangeScoreInterface {
     teamName: string;
     attenderUuid: string;
 }
+
+const validationSchema = Yup.object().shape({
+    score: Yup.number().required().min(0),
+});
 
 export const ChangeScore: React.FC<ChangeScoreInterface> = ({
     defaultScore,
@@ -74,6 +79,7 @@ export const ChangeScore: React.FC<ChangeScoreInterface> = ({
                     initialValues={initialValues}
                     onSubmit={handleSubmit}
                     enableReinitialize
+                    validationSchema={validationSchema}
                 >
                     {({ isSubmitting }) => (
                         <Form>
@@ -83,6 +89,8 @@ export const ChangeScore: React.FC<ChangeScoreInterface> = ({
                                     name="score"
                                     type="number"
                                     label={t("eventDetails.changeScore.score")}
+                                    variant="outlined"
+                                    fullWidth
                                 />
                             </DialogContent>
                             <DialogActions>

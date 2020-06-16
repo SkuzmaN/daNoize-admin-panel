@@ -6,7 +6,7 @@ query EventsList {
     uuid
     title
     plannedStartDate
-    status,
+    status
     attenders{
       uuid
       score

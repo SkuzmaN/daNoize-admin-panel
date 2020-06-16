@@ -5,6 +5,8 @@
         }
     },
     "eventDetails": {
+        "plannedStartedDate": "Planowana data rozpoczęcia: <1>{{date}}</1>",
+        "actualStatus": "Aktualny stan wydarzenia: <1>{{status}}</1>",
         "attenderList": {
             "score": "Wynik: {{score}}",
             "availableReactions": "Dostępne reakcje"
@@ -12,6 +14,11 @@
         "changeScore": {
             "title": "Zmień wynik dla drużyny {{team}}",
             "score": "Wynik",
+            "submit": "Zaktualizuj",
+            "cancel": "Anuluj"
+        },
+        "changeStatus": {
+            "title": "Zmień status wydarzenia",
             "submit": "Zaktualizuj",
             "cancel": "Anuluj"
         }
@@ -23,5 +30,10 @@
         "title": "Dodaj nową wiadomość",
         "message": "Wiadomość",
         "submit": "Wyślij"
+    },
+    "eventStatuses": {
+        "upcoming": "Nadchodzące",
+        "live": "Odbywa się",
+        "archived": "Zakończył się"
     }
 }

@@ -5,6 +5,8 @@ query EventDetails($uuid: String!) {
   event(uuid: $uuid) {
     uuid
     title
+    plannedStartDate
+    status
     incidents(orderBy: { createdAt: desc }) {
       uuid
       type

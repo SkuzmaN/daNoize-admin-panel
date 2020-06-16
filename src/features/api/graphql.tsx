@@ -200,6 +200,7 @@ export type Mutation = {
   addReaction: SupporterReaction;
   startEvent: Event;
   stopEvent: Event;
+  setEventAsUpcoming: Event;
   addIncident: Incident;
   changeScore: Attender;
 };
@@ -230,6 +231,11 @@ export type MutationStartEventArgs = {
 
 
 export type MutationStopEventArgs = {
+  event: Scalars['String'];
+};
+
+
+export type MutationSetEventAsUpcomingArgs = {
   event: Scalars['String'];
 };
 
@@ -290,6 +296,45 @@ export type AttenderReaction = {
   attenderAvailableReaction: AttenderAvailableReaction;
 };
 
+export type SetEventAsUpcomingMutationVariables = {
+  event: Scalars['String'];
+};
+
+
+export type SetEventAsUpcomingMutation = (
+  { __typename?: 'Mutation' }
+  & { setEventAsUpcoming: (
+    { __typename?: 'Event' }
+    & Pick<Event, 'status'>
+  ) }
+);
+
+export type StartEventMutationVariables = {
+  event: Scalars['String'];
+};
+
+
+export type StartEventMutation = (
+  { __typename?: 'Mutation' }
+  & { startEvent: (
+    { __typename?: 'Event' }
+    & Pick<Event, 'status'>
+  ) }
+);
+
+export type StopEventMutationVariables = {
+  event: Scalars['String'];
+};
+
+
+export type StopEventMutation = (
+  { __typename?: 'Mutation' }
+  & { stopEvent: (
+    { __typename?: 'Event' }
+    & Pick<Event, 'status'>
+  ) }
+);
+
 export type ChangeScoreMutationVariables = {
   attender: Scalars['String'];
   score: Scalars['Int'];
@@ -324,7 +369,7 @@ export type EventDetailsQuery = (
   { __typename?: 'Query' }
   & { event: (
     { __typename?: 'Event' }
-    & Pick<Event, 'uuid' | 'title'>
+    & Pick<Event, 'uuid' | 'title' | 'plannedStartDate' | 'status'>
     & { incidents: Array<(
       { __typename?: 'Incident' }
       & Pick<Incident, 'uuid' | 'type' | 'variables' | 'createdAt'>
@@ -389,6 +434,19 @@ export type AttenderModifiedSubscription = (
   ) }
 );
 
+export type EventStatusChangedSubscriptionVariables = {
+  event: Scalars['String'];
+};
+
+
+export type EventStatusChangedSubscription = (
+  { __typename?: 'Subscription' }
+  & { eventStatusChanged: (
+    { __typename?: 'Event' }
+    & Pick<Event, 'status'>
+  ) }
+);
+
 export type AddIncidentMutationVariables = {
   event: Scalars['String'];
   variables: Scalars['String'];
@@ -417,6 +475,102 @@ export type IncidentAppearedSubscription = (
 );
 
 
+export const SetEventAsUpcomingDocument = gql`
+    mutation SetEventAsUpcoming($event: String!) {
+  setEventAsUpcoming(event: $event) {
+    status
+  }
+}
+    `;
+export type SetEventAsUpcomingMutationFn = ApolloReactCommon.MutationFunction<SetEventAsUpcomingMutation, SetEventAsUpcomingMutationVariables>;
+
+/**
+ * __useSetEventAsUpcomingMutation__
+ *
+ * To run a mutation, you first call `useSetEventAsUpcomingMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useSetEventAsUpcomingMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [setEventAsUpcomingMutation, { data, loading, error }] = useSetEventAsUpcomingMutation({
+ *   variables: {
+ *      event: // value for 'event'
+ *   },
+ * });
+ */
+export function useSetEventAsUpcomingMutation(baseOptions?: ApolloReactHooks.MutationHookOptions<SetEventAsUpcomingMutation, SetEventAsUpcomingMutationVariables>) {
+        return ApolloReactHooks.useMutation<SetEventAsUpcomingMutation, SetEventAsUpcomingMutationVariables>(SetEventAsUpcomingDocument, baseOptions);
+      }
+export type SetEventAsUpcomingMutationHookResult = ReturnType<typeof useSetEventAsUpcomingMutation>;
+export type SetEventAsUpcomingMutationResult = ApolloReactCommon.MutationResult<SetEventAsUpcomingMutation>;
+export type SetEventAsUpcomingMutationOptions = ApolloReactCommon.BaseMutationOptions<SetEventAsUpcomingMutation, SetEventAsUpcomingMutationVariables>;
+export const StartEventDocument = gql`
+    mutation StartEvent($event: String!) {
+  startEvent(event: $event) {
+    status
+  }
+}
+    `;
+export type StartEventMutationFn = ApolloReactCommon.MutationFunction<StartEventMutation, StartEventMutationVariables>;
+
+/**
+ * __useStartEventMutation__
+ *
+ * To run a mutation, you first call `useStartEventMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useStartEventMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [startEventMutation, { data, loading, error }] = useStartEventMutation({
+ *   variables: {
+ *      event: // value for 'event'
+ *   },
+ * });
+ */
+export function useStartEventMutation(baseOptions?: ApolloReactHooks.MutationHookOptions<StartEventMutation, StartEventMutationVariables>) {
+        return ApolloReactHooks.useMutation<StartEventMutation, StartEventMutationVariables>(StartEventDocument, baseOptions);
+      }
+export type StartEventMutationHookResult = ReturnType<typeof useStartEventMutation>;
+export type StartEventMutationResult = ApolloReactCommon.MutationResult<StartEventMutation>;
+export type StartEventMutationOptions = ApolloReactCommon.BaseMutationOptions<StartEventMutation, StartEventMutationVariables>;
+export const StopEventDocument = gql`
+    mutation StopEvent($event: String!) {
+  stopEvent(event: $event) {
+    status
+  }
+}
+    `;
+export type StopEventMutationFn = ApolloReactCommon.MutationFunction<StopEventMutation, StopEventMutationVariables>;
+
+/**
+ * __useStopEventMutation__
+ *
+ * To run a mutation, you first call `useStopEventMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useStopEventMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [stopEventMutation, { data, loading, error }] = useStopEventMutation({
+ *   variables: {
+ *      event: // value for 'event'
+ *   },
+ * });
+ */
+export function useStopEventMutation(baseOptions?: ApolloReactHooks.MutationHookOptions<StopEventMutation, StopEventMutationVariables>) {
+        return ApolloReactHooks.useMutation<StopEventMutation, StopEventMutationVariables>(StopEventDocument, baseOptions);
+      }
+export type StopEventMutationHookResult = ReturnType<typeof useStopEventMutation>;
+export type StopEventMutationResult = ApolloReactCommon.MutationResult<StopEventMutation>;
+export type StopEventMutationOptions = ApolloReactCommon.BaseMutationOptions<StopEventMutation, StopEventMutationVariables>;
 export const ChangeScoreDocument = gql`
     mutation ChangeScore($attender: String!, $score: Int!) {
   changeScore(attender: $attender, score: $score) {
@@ -466,6 +620,8 @@ export const EventDetailsDocument = gql`
   event(uuid: $uuid) {
     uuid
     title
+    plannedStartDate
+    status
     incidents(orderBy: {createdAt: desc}) {
       uuid
       type
@@ -598,6 +754,35 @@ export function useAttenderModifiedSubscription(baseOptions?: ApolloReactHooks.S
       }
 export type AttenderModifiedSubscriptionHookResult = ReturnType<typeof useAttenderModifiedSubscription>;
 export type AttenderModifiedSubscriptionResult = ApolloReactCommon.SubscriptionResult<AttenderModifiedSubscription>;
+export const EventStatusChangedDocument = gql`
+    subscription EventStatusChanged($event: String!) {
+  eventStatusChanged(event: $event) {
+    status
+  }
+}
+    `;
+
+/**
+ * __useEventStatusChangedSubscription__
+ *
+ * To run a query within a React component, call `useEventStatusChangedSubscription` and pass it any options that fit your needs.
+ * When your component renders, `useEventStatusChangedSubscription` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the subscription, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useEventStatusChangedSubscription({
+ *   variables: {
+ *      event: // value for 'event'
+ *   },
+ * });
+ */
+export function useEventStatusChangedSubscription(baseOptions?: ApolloReactHooks.SubscriptionHookOptions<EventStatusChangedSubscription, EventStatusChangedSubscriptionVariables>) {
+        return ApolloReactHooks.useSubscription<EventStatusChangedSubscription, EventStatusChangedSubscriptionVariables>(EventStatusChangedDocument, baseOptions);
+      }
+export type EventStatusChangedSubscriptionHookResult = ReturnType<typeof useEventStatusChangedSubscription>;
+export type EventStatusChangedSubscriptionResult = ApolloReactCommon.SubscriptionResult<EventStatusChangedSubscription>;
 export const AddIncidentDocument = gql`
     mutation AddIncident($event: String!, $variables: String!) {
   addIncident(event: $event, type: "message", variables: $variables) {
