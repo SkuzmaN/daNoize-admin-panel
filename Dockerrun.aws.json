@@ -1,0 +1,14 @@
+
+ {
+ "AWSEBDockerrunVersion": "1",
+  "Image": {
+    "Name": "593307521420.dkr.ecr.eu-central-1.amazonaws.com/da-noize-admin:latest",
+    "Update": "true"
+  },
+  "Ports": [
+    {
+      "ContainerPort": "80"
+    }
+  ],
+  "Logging": "/var/log"
+}
