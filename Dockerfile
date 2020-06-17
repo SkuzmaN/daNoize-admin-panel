@@ -11,15 +11,15 @@ RUN npm install -g yarn
 RUN yarn install
 RUN yarn build
 
-# After typescript has been compiled install production dependencies
-RUN yarn install --prod
-
-FROM nginx:stable-alpine
+FROM node:12.10.0-alpine
 
 WORKDIR /daNoize
+COPY server /daNoize/app
+RUN cd /daNoize/app && yarn install --prod
+COPY --from=buildStage build /daNoize/app/build
 
-COPY --from=buildStage /build /usr/share/nginx/html
+RUN npm install -g pm2
 
-COPY nginx/nginx.conf /etc/nginx/conf.d/default.conf
-EXPOSE 80
-CMD ["nginx", "-g", "daemon off;"]
+EXPOSE 3000
+
+CMD [ "pm2", "start", "app/server.js", "--no-daemon", "-f", "-i", "2", "--max-memory-restart", "175M" ]
